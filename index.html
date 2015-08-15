@@ -1,0 +1,57 @@
+<html>
+	<head>
+		<title>Hosts</title>
+		<script type="text/javascript" src="prototype.js"></script>
+        <script type="text/javascript">
+        function loadHosts()
+        {
+            var url = "service.php?class=host&method=getList";
+            var request = new Ajax.Request(
+                    url,
+                    {
+                        method: 'get',
+                        requestHeaders: {Accept: 'application/json'},
+                        onSuccess: function(req) {
+                            var servers = req.responseText.evalJSON();
+							for (var i = 0; i < servers.length; i++) {
+                                var tr = new Element('tr');
+                                for (var property in servers[i]) {
+                                    tr.appendChild(new Element('td', {}).update(servers[i][property]));
+                                }
+                                $('host_table').appendChild(tr);
+                            }
+                        }
+                    }
+            );
+        }
+		</script>
+		<style type="text/css">
+        #host_table {
+			position: absolute;
+		    top: 50%;
+		    left: 33.5%;
+            border: 1px solid #ccc;
+            border-collapse: collapse;
+            width: 33%;	
+			background-color: LightBlue;		
+			border-color: DarkBlue;
+        }
+        #host_table th, td, tr {
+            margin: 0;
+            padding: 2px 5px;
+			text-align:center;
+        }
+        #host_table th {
+            color: #fff;
+            font-weight: bold;
+            background-color: #444;
+        }
+        </style>
+	</head>
+	<body>
+        <input type='button' href="javascript:void(0)" onclick="javascript:loadHosts()" value='Load Hosts'/>
+        <table id="host_table">
+           <tr><th>ID</th><th>Name</th><th>IP Address</th><th>Username</th></tr>
+        </table>
+	</body>
+</html>
